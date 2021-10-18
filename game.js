@@ -3,6 +3,7 @@ var gamePattern = [];
 var userClickedPattern = [];
 var toggleStart = true;
 var level = 0;
+var hintHidden = true;
 
 $(document).on("keypress", function(){
   if(toggleStart == true){
@@ -12,6 +13,16 @@ $(document).on("keypress", function(){
   $("h1").text("Level "+level);
 
 });
+
+$("p").hide();
+$("button").on("click", function(){
+  if(hintHidden == true){
+    $("p").fadeToggle();    //I used to put $("p").hide() here and then again fadeToggle() at the bottom so they were contradicting each other. So if you figure out the logic you will come up with new strategies to solve the problem of first hiding the text and then only show it when the button is pressed the hintHidden Boolean helped solve this.  
+  }
+  hintHidden == false;
+
+
+})
 
 function nextSequence(){
   var randomNumber = (Math.random()) * 4;
@@ -81,8 +92,9 @@ function pressedAnimation(currentColor){
         $("body").removeClass("game-over");
       }, 500);
 
-      $("h1").text("Game over. Press any key to restart");
-
+      $("h1").text("Game over. You reached level "+level);
+      $("h2").show();
+      $("h2").text("Press any key to restart");
       var gameOver = new Audio("sounds/wrong.mp3");
       gameOver.play();
       startOver();
@@ -97,7 +109,7 @@ function pressedAnimation(currentColor){
     gamePattern.length = 0;
     level = 0;
     $(document).on("keypress", function(){
-
+      $("h2").hide();
       console.log(userClickedPattern);
       if(toggleStart == true){
 
